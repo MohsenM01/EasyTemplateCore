@@ -1,0 +1,31 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: lateralapp-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lateralapp
+  template:
+    metadata:
+      labels:
+        app: lateralapp
+    spec:
+      containers:
+        - name: lateralapp
+          image: mohsen01/lateralapp:latest
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: lateralapp-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: lateralapp
+  ports:
+  - name: lateralapp
+    protocol: TCP
+    port: 80
+    targetPort: 80 

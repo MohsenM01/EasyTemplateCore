@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "CountryService";
+
+service GrpcCountry {
+	rpc GetAllCountries (GetAllRequest) returns (CountryResponse);
+}
+
+message GetAllRequest {}
+
+message GrpcCountryModel{
+	string id = 1;
+	string countryAbbr = 2;
+	string countryNo = 3;
+	string countryName = 4;
+	string remark = 5;
+}
+
+message CountryResponse {
+	repeated GrpcCountryModel country = 1;
+}

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: test.com
+      http:
+        paths:
+          - path: /easytemplatecore/api/weather
+            pathType: Prefix
+            backend:
+              service:
+                name: easytemplatecore-clusterip-srv
+                port:
+                  number: 80
+          - path: /lateralapp/api/weather
+            pathType: Prefix
+            backend:
+              service:
+                name: lateralapp-clusterip-srv
+                port:
+                  number: 80

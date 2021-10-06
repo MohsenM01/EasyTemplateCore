@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.22.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EasyTemplateCore.Data\EasyTemplateCore.Data.csproj" />
     <ProjectReference Include="..\EasyTemplateCore.Entities\EasyTemplateCore.Entities.csproj" />
     <ProjectReference Include="..\EasyTemplateCore.Dtos\EasyTemplateCore.Dtos.csproj" />
