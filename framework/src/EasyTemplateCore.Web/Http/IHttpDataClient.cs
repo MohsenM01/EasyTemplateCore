@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using EasyTemplateCore.Dtos.Location.Country;
 
-namespace EasyTemplateCore.Http
+namespace EasyTemplateCore.Web.Http
 {
     public interface IHttpDataClient
     {

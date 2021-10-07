@@ -4,16 +4,14 @@ using EasyTemplateCore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace EasyTemplateCore.Migrations
+namespace EasyTemplateCore.Web.Migrations
 {
     [DbContext(typeof(EasyTemplateCoreContext))]
-    [Migration("20211005232028_initialmigration")]
-    partial class initialmigration
+    partial class EasyTemplateCoreContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -4,7 +4,7 @@ using CountryService;
 using EasyTemplateCore.Services.Location.Interfaces;
 using Grpc.Core;
 
-namespace EasyTemplateCore.Grpc
+namespace EasyTemplateCore.Web.Grpc
 {
     public class GrpcCountryService : GrpcCountry.GrpcCountryBase
     {

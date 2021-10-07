@@ -2,7 +2,7 @@
 using CountryService;
 using EasyTemplateCore.Dtos.Location.Country;
 
-namespace EasyTemplateCore.Grpc
+namespace EasyTemplateCore.Web.Grpc
 {
     public class CountryGrpcProfile : Profile
     {

@@ -3,7 +3,7 @@ using AutoMapper;
 using AutoMapper.Configuration;
 using EasyTemplateCore.Dtos.Location.Country;
 
-namespace EasyTemplateCore.Grpc
+namespace EasyTemplateCore.Web.Grpc
 {
     public class CountryDataClient
     {

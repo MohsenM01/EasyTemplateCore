@@ -5,7 +5,7 @@ using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EasyTemplateCore.Controllers
+namespace EasyTemplateCore.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]

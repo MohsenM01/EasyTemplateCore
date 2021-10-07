@@ -1,6 +1,6 @@
 using EasyTemplateCore.Dtos.Location.Country;
 
-namespace EasyTemplateCore.MessageBus
+namespace EasyTemplateCore.Web.MessageBus
 {
     public interface IMessageBusClient
     {

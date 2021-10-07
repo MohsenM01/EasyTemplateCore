@@ -8,10 +8,10 @@ using DNTCommon.Web.Core;
 using EasyTemplateCore.Data;
 using EasyTemplateCore.Dtos;
 using EasyTemplateCore.Dtos.Location.Country;
-using EasyTemplateCore.Grpc;
-using EasyTemplateCore.MessageBus;
-using EasyTemplateCore.MessageBus.EventProcessing;
 using EasyTemplateCore.Services.Location.Interfaces;
+using EasyTemplateCore.Web.Grpc;
+using EasyTemplateCore.Web.MessageBus;
+using EasyTemplateCore.Web.MessageBus.EventProcessing;
 using ElmahCore;
 using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
@@ -24,7 +24,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace EasyTemplateCore
+namespace EasyTemplateCore.Web
 {
     public class Startup
     {
@@ -114,7 +114,7 @@ namespace EasyTemplateCore
 
             // Automapper => Automatically scanning for profiles
             var configuration =
-                new MapperConfiguration(cfg => 
+                new MapperConfiguration(cfg =>
                     cfg.AddMaps(Assembly.GetAssembly(typeof(CountryProfile)), Assembly.GetAssembly(typeof(CountryGrpcProfile))));
             //configuration.AssertConfigurationIsValid();
             AutoMapperConfiguration.Init(configuration);
@@ -150,7 +150,7 @@ namespace EasyTemplateCore
                                  TimeSpan.FromSeconds(30),
                                  null);
 
-                            serverDbContextOptionsBuilder.MigrationsAssembly("EasyTemplateCore");
+                            serverDbContextOptionsBuilder.MigrationsAssembly("EasyTemplateCore.Web");
                         }).AddInterceptors(new PersianYeKeCommandInterceptor());
                 }
                 optionsBuilder.UseInternalServiceProvider(serviceProvider);

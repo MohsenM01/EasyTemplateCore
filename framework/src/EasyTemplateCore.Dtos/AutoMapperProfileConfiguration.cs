@@ -14,7 +14,7 @@ namespace EasyTemplateCore.Dtos
     {
 
         /// <summary>
-        /// 
+        ///  Get all Automapper Profiles 
         /// </summary>
         /// <remarks>
         /// for Ignore map : .ForMember(des => des.RowVersion, op => op.Ignore())
@@ -23,13 +23,12 @@ namespace EasyTemplateCore.Dtos
         {
             var typesToRegisterAsm = Assembly.GetAssembly(typeof(CountryProfile));
 
-            var configurations = typesToRegisterAsm?.GetTypes()
-                .Where(type => type.BaseType != null &&
-                               !type.BaseType.IsGenericType &&
+            return typesToRegisterAsm?.GetTypes()
+                .Where(type => type
+                    .BaseType?
+                    .IsGenericType == false &&
                                type.BaseType == typeof(Profile))
                 .ToList();
-            return configurations;
         }
-
     }
 }

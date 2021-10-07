@@ -5,7 +5,7 @@ using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EasyTemplateCore.MessageBus.EventProcessing
+namespace EasyTemplateCore.Web.MessageBus.EventProcessing
 {
     public class EventProcessor : IEventProcessor
     {

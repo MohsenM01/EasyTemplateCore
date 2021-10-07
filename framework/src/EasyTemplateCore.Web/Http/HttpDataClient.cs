@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using EasyTemplateCore.Dtos.Location.Country;
 using Microsoft.Extensions.Configuration;
 
-namespace EasyTemplateCore.Http
+namespace EasyTemplateCore.Web.Http
 {
     public class HttpDataClient : IHttpDataClient
     {

@@ -5,7 +5,7 @@ using EasyTemplateCore.Dtos.Location.Country;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 
-namespace EasyTemplateCore.MessageBus
+namespace EasyTemplateCore.Web.MessageBus
 {
     public class MessageBusClient : IMessageBusClient
     {

@@ -1,7 +1,6 @@
 ﻿
-namespace EasyTemplateCore.MessageBus.EventProcessing
+namespace EasyTemplateCore.Web.MessageBus.EventProcessing
 {
-
     public enum EventType
     {
         AddCountry,
