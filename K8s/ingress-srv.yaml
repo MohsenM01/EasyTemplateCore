@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-    - host: test.com
+    - host: example.com
       http:
         paths:
           - path: /easytemplatecore/api/weather

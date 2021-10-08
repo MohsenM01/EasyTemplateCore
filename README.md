@@ -118,6 +118,7 @@ From local image: run the following command in VSCode Terminal or CMD:
 
 ``` bash
 docker run -d -p 8080:80 <your_username>/easytemplatecore
+
 ```
 ###### More information :
 [Dockerize an ASP.NET Core application](https://docs.docker.com/samples/dotnetcore/)
@@ -136,9 +137,151 @@ docker run -d -p 8080:80 <your_username>/easytemplatecore
 
 ## Orchestration Managing containers : Kubernetes
 To enable Kubernetes support and install a standalone instance of Kubernetes running as a Docker container, on Docker Dektop, go to Preferences > Kubernetes and then click Enable Kubernetes.
-Deploying the Dashboard UI for Kubernetes:
 
-[Deploy and Access the Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+**IMPORTANT** If Kubernetes doesn't run, Edit your Hosts File, by these steps:
+1- Open up the Hosts file using Notepad:
+```
+c:\windows\system32\drivers\etc\hosts
+```
+2- Add this line at the end of the file:
+```
+# To allow the same kube context to work on the host and the container:
+127.0.0.1 kubernetes.docker.internal
+# End of section
+```
+
+### Deploying the Dashboard UI for Kubernetes:
+1- Run the following command:
+
+``` bash
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml
+```
+
+2- To create sample user and a Service Account copy the following commands to new manifest file like `kube-dashboard-adminuser.yaml` and use `kubectl apply -f kube-dashboard-adminuser.yaml` to create them.
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+```
+
+3- Now we should find the secret. Execute following command to get the secret:
+
+```shell
+kubectl get secrets
+```
+The result should be somthing like : 
+
+NAME                  TYPE                                  DATA   AGE
+default-token-dlgql   kubernetes.io/service-account-token   3      37m
+
+4- Then, we need to find token we can use to log in. Execute following command to describe the secret:
+
+```shell
+kubectl describe secret default-token-dlgql
+```
+
+It should print something like:
+
+```
+eyJhbGciOiJSUzI1NiIsImtpZCI6IkxVUlgzZVRwUkRQMHpOX25YWnZWRS1BUGIzR2hYZ3AwUlhWWEFJUXBfQTgifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tZGxncWwiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6Ijg5NzU3YWJhLTkyMTEtNDAyMC1iNmI4LTkyNzllOTUzZTM3YSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.AZG2ftPsjWXwIdkSmfyutgbwAWNjUuoyOcUNqC1HxpKFOA2s3oGna_y-N-l5m7jEExmg9oX1NWXEevAsR1uTc3SbC44whP_JoWPuZuM3N0CI1IJh3sPExnLz6RmW2ImaQ9PN_1pDM9s_ZjLM2ryOHQxBjEzVNwDEHo5SS8qFTFKZkLwhp0S8DfZMCPamAuTRF5zYvFPX2a1EadIuy6_ug7-1V1UW9BtIrzsDYMTLN3WhrvvzXZFbzJPaVUqhAae5DVm-aofrEuYL-iRBbKZ9vmpl3SC1qOl7P7yPm_hNOFNdV19JOvPvYWKWrHvojJnkFNOv62QeOoqkQRXEXv0aAA
+```
+
+Copy the token.
+
+5- You can enable access to the Dashboard using the kubectl `command-line` tool, by running the following command:
+```bash
+
+kubectl proxy
+```
+6- Kubectl will make Dashboard available at [http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/).
+
+7- Now paste the token into `Enter token` field on the login screen.
+
+### NGINX Ingress Controller 
+
+1- To install `NGINX Ingress Controller` on kubernetes, just run the following command:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.3/deploy/static/provider/cloud/deploy.yaml
+
+```
+
+Just for information:
+
+To see kubernetes namespaces:
+ ```bash
+kubectl get namespaces
+
+```
+
+To see kubernetes Ingress pods:
+ ```bash
+kubectl get pods --namespace=ingress-nginx
+
+```
+
+To see kubernetes Ingress services:
+ ```bash
+kubectl get services --namespace=ingress-nginx
+
+```
+
+2- Ingress-nginx will route traffic to 2 different HTTP backend services based on the path name.To achieve this, copy the following commands to new manifest file like `ingress-srv.yaml` and use `kubectl apply -f ingress-srv.yaml`.
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: /easytemplatecore/api/weather
+            pathType: Prefix
+            backend:
+              service:
+                name: easytemplatecore-clusterip-srv
+                port:
+                  number: 80
+          - path: /lateralapp/api/weather
+            pathType: Prefix
+            backend:
+              service:
+                name: lateralapp-clusterip-srv
+                port:
+                  number: 80
+```
+
+### Edit Your Hosts File on Windows to rout example.com
+1- Open up the Host file using Notepad:
+```
+c:\windows\system32\drivers\etc\hosts
+```
+2- Add this line at the end of the file:
+```
+127.0.0.1 example.com
+```
 
 
 ###### More information :
@@ -148,13 +291,23 @@ Deploying the Dashboard UI for Kubernetes:
 
 [Install and Set Up kubectl on Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
 
+[Deploy and Access the Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+
 [Adding Windows nodes](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/adding-windows-nodes/)
 
 [Kubernetes Cluster On Windows Server Worker Nodes](https://www.hostafrica.co.za/blog/new-technologies/install-kubernetes-cluster-windows-server-worker-nodes)
 
 [Windows containers on Azure Kubernetes](https://docs.microsoft.com/en-us/azure/aks/windows-container-cli)
+
 [Kubernetes on AWS](https://aws.amazon.com/kubernetes/)
+
 [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
+
+[NGINX Ingress Controller Installation Guide](https://kubernetes.github.io/ingress-nginx/deploy/)
+
+[NGINX Ingress Controller Basic usage - host based routing](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/)
+
+[How to Edit Your Hosts File on Windows, Mac, or Linux](https://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/)
 
 ## RPC framework : GRPC
 ## Sysnch Consume APIs : HTTP Client
