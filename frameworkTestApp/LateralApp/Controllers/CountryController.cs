@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EasyTemplateCore.Dtos.Location.Country;
-using EasyTemplateCore.Services.Location.Interfaces;
+using LateralApp.Dtos.Location.Country;
+using LateralApp.Services.Location.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EasyTemplateCore.Web.Controllers
+namespace LateralApp.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
     public class CountryController : ControllerBase
     {
         private readonly ICountryService _countryService;
@@ -89,7 +89,7 @@ namespace EasyTemplateCore.Web.Controllers
             {
                 return NotFound();
             }
-            var result = await _countryService.EditCountryAsync(id, editCountryDto);
+            var result = await _countryService.EditCountryAsync(id,editCountryDto);
             if (result.IsFailure)
             {
                 //TODO Return errors

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace EasyTemplateCore.Dtos.Location.Country
+namespace LateralApp.Dtos.Location.Country
 {
 
     /// <summary>

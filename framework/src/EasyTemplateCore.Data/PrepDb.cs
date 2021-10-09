@@ -1,3 +1,4 @@
+using System.Linq;
 using EasyTemplateCore.Entities.Location;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,11 +6,10 @@ namespace EasyTemplateCore.Data
 {
     public static class PrepDb
     {
-
         public static void SeedData(IUnitOfWork uow)
         {
             uow.Database.Migrate();
-
+            if (uow.Set<Country>().Any()) return;
             uow.Set<Country>().AddRangeAsync(
                 new Country
                 {

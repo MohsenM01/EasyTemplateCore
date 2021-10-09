@@ -360,6 +360,120 @@ spec:
 
 [Deploy a SQL Server container in Kubernetes](https://docs.microsoft.com/en-us/sql/linux/tutorial-sql-server-containers-kubernetes?view=sql-server-ver15)
 
+## Deploy RabbitMQ on Kubernetes
+To create `Deployment` for `RabbitMQ` copy the following commands to new manifest file like `rabbitmq-depl.yaml` and use `kubectl apply -f rabbitmq-depl.yaml` command to create it.
+
+```yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: rabbitmq-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3-management
+          ports:
+            - containerPort: 15672
+              name: rbmq-mgmt-port
+            - containerPort: 5672
+              name: rbmq-msg-port
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rabbitmq-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmq
+  ports:
+  - name: rbmq-mgmt-port
+    protocol: TCP
+    port: 15672
+    targetPort: 15672
+  - name: rbmq-msg-port
+    protocol: TCP
+    port: 5672
+    targetPort: 5672
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rabbitmq-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: rabbitmq
+  ports:
+  - name: rbmq-mgmt-port
+    protocol: TCP
+    port: 15672
+    targetPort: 15672
+  - name: rbmq-msg-port
+    protocol: TCP
+    port: 5672
+    targetPort: 5672
+```
+
+#### More information : 
+[Kubernetes, Give Me a Queue](https://tanzu.vmware.com/content/rabbitmq/kubernetes-tanzu-rabbitmq)
+
+[Deploying RabbitMQ to Kubernetes](https://blog.rabbitmq.com/posts/2020/08/deploying-rabbitmq-to-kubernetes-whats-involved/)
+
+[RabbitMQ Cluster Operator for Kubernetes](https://www.rabbitmq.com/kubernetes/operator/operator-overview.html)
+
+[RabbitMQ Cluster Kubernetes Operator Quickstart](https://www.rabbitmq.com/kubernetes/operator/quickstart-operator.html)
+
+[Installing RabbitMQ Cluster Operator in a Kubernetes Cluster](https://www.rabbitmq.com/kubernetes/operator/install-operator.html)
+## Deploy EasyTemplateCore on Kubernetes
+To create `Deployment` for `EasyTemplateCore` copy the following commands to new manifest file like `easytemplatecore-depl.yaml` and use `kubectl apply -f easytemplatecore-depl.yaml` command to create it.
+
+```yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: easytemplatecore-depl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: easytemplatecore
+  template:
+    metadata:
+      labels:
+        app: easytemplatecore
+    spec:
+      containers:
+        - name: easytemplatecore
+          image: mohsen01/easytemplatecore:latest
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: easytemplatecore-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: easytemplatecore
+  ports:
+  - name: easytemplatecore
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  - name: easytemplatecoregrpc
+    protocol: TCP
+    port: 8000
+    targetPort: 8000
+```
 
 #### More information : 
 [Build ASP.NET Core applications deployed as Linux containers into an AKS/Kubernetes orchestrator](https://docs.microsoft.com/en-us/dotnet/architecture/containerized-lifecycle/design-develop-containerized-apps/build-aspnet-core-applications-linux-containers-aks-kubernetes)

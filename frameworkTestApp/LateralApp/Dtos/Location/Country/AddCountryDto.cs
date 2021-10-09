@@ -1,20 +1,14 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace EasyTemplateCore.Dtos.Location.Country
+namespace LateralApp.Dtos.Location.Country
 {
 
     /// <summary>
     /// 
     /// </summary>
-    public class EditCountryDto
+    public class AddCountryDto
     {
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Guid Id { get; set; }
 
         /// <summary>
         /// 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace EasyTemplateCore.Dtos.Location.Country
+namespace LateralApp.Dtos.Location.Country
 {
     public class CountryProfile : Profile
     {
@@ -10,7 +10,7 @@ namespace EasyTemplateCore.Dtos.Location.Country
         public CountryProfile()
         {
             CreateMap<AddCountryDto, Entities.Location.Country>();
-            CreateMap<EditCountryDto, Entities.Location.Country>();			
+            CreateMap<EditCountryDto, Entities.Location.Country>();
             CreateMap<Entities.Location.Country, AddCountryDto>();
             CreateMap<Entities.Location.Country, CountryDto>();
         }

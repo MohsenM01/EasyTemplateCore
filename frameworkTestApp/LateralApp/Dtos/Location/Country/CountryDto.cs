@@ -1,16 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
-namespace EasyTemplateCore.Dtos.Location.Country
+namespace LateralApp.Dtos.Location.Country
 {
-
     /// <summary>
     /// 
     /// </summary>
-    public class EditCountryDto
+    public class CountryDto
     {
-
         /// <summary>
         /// 
         /// </summary>
@@ -19,32 +16,25 @@ namespace EasyTemplateCore.Dtos.Location.Country
         /// <summary>
         /// 
         /// </summary>
-        [DisplayName("Country Abbr"),
-         Required(AllowEmptyStrings = false),
-         StringLength(3, MinimumLength = 3)]
+        [DisplayName("Country Abbr")]
         public string CountryAbbr { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [DisplayName("Country No"),
-         Required(AllowEmptyStrings = false)]
+        [DisplayName("Country No")]
         public int CountryNo { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [DisplayName("Country Name"),
-         Required(AllowEmptyStrings = false),
-         StringLength(200, MinimumLength = 3)]
+        [DisplayName("Country Name")]
         public string CountryName { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [DisplayName("Remark"),
-         StringLength(500, MinimumLength = 3)]
+        [DisplayName("Remark")]
         public string Remark { get; set; }
-
     }
 }

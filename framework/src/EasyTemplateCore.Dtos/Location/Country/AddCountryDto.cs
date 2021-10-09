@@ -15,15 +15,14 @@ namespace EasyTemplateCore.Dtos.Location.Country
         /// </summary>
         [DisplayName("Country Abbr"),
          Required(AllowEmptyStrings = false),
-         StringLength(3, MinimumLength = 4)]
+         StringLength(3, MinimumLength = 3)]
         public string CountryAbbr { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [DisplayName("Country No"),
-         Required(AllowEmptyStrings = false),
-         StringLength(50, MinimumLength = 1)]
+         Required(AllowEmptyStrings = false)]
         public int CountryNo { get; set; }
 
         /// <summary>

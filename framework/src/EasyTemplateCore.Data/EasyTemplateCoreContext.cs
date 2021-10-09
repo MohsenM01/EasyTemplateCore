@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using EasyTemplateCore.Entities;
+using EasyTemplateCore.Entities.Location;
 using System.Reflection;
 using System;
 using System.Linq;
@@ -19,6 +20,18 @@ namespace EasyTemplateCore.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ApplyEntitiesConfigurations(modelBuilder);
+			
+			modelBuilder.Entity<Country>()
+                .HasIndex(b => b.CountryNo)
+                .IsUnique();
+
+            modelBuilder.Entity<Country>()
+                .HasIndex(b => b.CountryName)
+                .IsUnique();
+
+            modelBuilder.Entity<Country>()
+                .HasIndex(b => b.CountryAbbr)
+                .IsUnique();
         }
 
         /// <summary>
