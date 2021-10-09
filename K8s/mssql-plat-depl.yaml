@@ -1,7 +1,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: mssql-depl
+  name: mssql2019-depl
 spec:
   replicas: 1
   selector:
@@ -25,20 +25,20 @@ spec:
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mssql
-                key: SA_PASSWORD
+                name: mssql2019
+                key: SA_MSSQL2019_PASSWORD
           volumeMounts:
           - mountPath: /var/opt/mssql/data
             name: mssqldb
       volumes:
       - name: mssqldb
         persistentVolumeClaim:
-          claimName: mssql-claim
+          claimName: mssql2019-claim
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: mssql-clusterip-srv
+  name: mssql2019-clusterip-srv
 spec:
   type: ClusterIP
   selector:
@@ -52,7 +52,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: mssql-loadbalancer
+  name: mssql2019-loadbalancer
 spec:
   type: LoadBalancer
   selector:

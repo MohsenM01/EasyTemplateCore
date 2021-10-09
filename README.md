@@ -77,7 +77,6 @@ ENTRYPOINT ["dotnet", "EasyTemplateCore.Web.dll"]
 !If you want to use Kubernetes, just run step 2 and 3 in part " Use it from docker hub image "
 ```
 
-
 ##### Use it from local image :
 
 2- To Build the Docker Image, In solution folder, run the following command in VSCode Terminal or CMD:
@@ -139,6 +138,7 @@ docker run -d -p 8080:80 <your_username>/easytemplatecore
 To enable Kubernetes support and install a standalone instance of Kubernetes running as a Docker container, on Docker Dektop, go to Preferences > Kubernetes and then click Enable Kubernetes.
 
 **IMPORTANT** If Kubernetes doesn't run, Edit your Hosts File, by these steps:
+
 1- Open up the Hosts file using Notepad:
 ```
 c:\windows\system32\drivers\etc\hosts
@@ -158,7 +158,7 @@ c:\windows\system32\drivers\etc\hosts
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml
 ```
 
-2- To create sample user and a Service Account copy the following commands to new manifest file like `kube-dashboard-adminuser.yaml` and use `kubectl apply -f kube-dashboard-adminuser.yaml` to create them.
+2- To create sample user and a Service Account copy the following commands to new manifest file like `kube-dashboard-adminuser.yaml` and use `kubectl apply -f kube-dashboard-adminuser.yaml` command to create them.
 
 ```yaml
 apiVersion: v1
@@ -188,8 +188,9 @@ kubectl get secrets
 ```
 The result should be somthing like : 
 
-NAME                  TYPE                                  DATA   AGE
-default-token-dlgql   kubernetes.io/service-account-token   3      37m
+| NAME | TYPE | DATA | AGE |
+|--|--|--|--|
+| default-token-dlgql | kubernetes.io/service-account-token | 3 | 37m |
 
 4- Then, we need to find token we can use to log in. Execute following command to describe the secret:
 
@@ -214,16 +215,162 @@ kubectl proxy
 
 7- Now paste the token into `Enter token` field on the login screen.
 
-### NGINX Ingress Controller 
+
+###### More information :
+
+[Kubernetes Concepts](https://kubernetes.io/docs/concepts/)
+
+[Deploy on Kubernetes](https://docs.docker.com/desktop/kubernetes/)
+
+[Kubernetes on Windows](https://docs.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/getting-started-kubernetes-windows)
+
+[Install and Set Up kubectl on Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
+
+[Deploy and Access the Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+
+[Adding Windows nodes](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/adding-windows-nodes/)
+
+[Kubernetes Cluster On Windows Server Worker Nodes](https://www.hostafrica.co.za/blog/new-technologies/install-kubernetes-cluster-windows-server-worker-nodes)
+
+[Windows containers on Azure Kubernetes](https://docs.microsoft.com/en-us/azure/aks/windows-container-cli)
+
+[Kubernetes on AWS](https://aws.amazon.com/kubernetes/)
+
+[Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
+
+[Windows containers in Kubernetes](https://kubernetes.io/docs/setup/production-environment/windows/intro-windows-in-kubernetes/)
+
+[Guide for scheduling Windows containers in Kubernetes](https://kubernetes.io/docs/setup/production-environment/windows/user-guide-windows-containers/)
+
+## Datbase : SQL Server (Always on)
+
+1- To create `Persistent Volume Claim` copy the following commands to new manifest file like `local-mssql-pvc.yaml` and use `kubectl apply -f local-mssql-pvc.yaml` command to create them.
+
+```yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mssql2019-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 400Mi
+```
+
+To see kubernetes PersistentVolumeClaims:
+ ```bash
+kubectl get PersistentVolumeClaim
+
+Or
+
+kubectl get pvc
+
+```
+
+To see kubernetes storageclasses:
+ ```bash
+kubectl get storageclass
+
+```
+
+2- To create a secret in Kubernetes `mssql2019` mssql that holds the value `P@$$w0rd` for the `SA_MSSQL2019_PASSWORD`, run the command:
+```bash
+kubectl create secret generic mssql2019 --from-literal=SA_MSSQL2019_PASSWORD="P@$$w0rd"
+```
+**IMPORTANT** Replace `P@$$w0rd` with a complex password.
+
+3- To create `Deployment` for `mssql2019 and clusterip and access it from your windows` copy the following commands to new manifest file like `mssql-plat-depl.yaml` and use `kubectl apply -f mssql-plat-depl.yaml` command to create them.
+
+```yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mssql2019-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql
+  template:
+    metadata:
+      labels:
+        app: mssql
+    spec:
+      containers:
+        - name: mssql
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          ports:
+            - containerPort: 1433
+          env:
+          - name: MSSQL_PID
+            value: "Express"
+          - name: ACCEPT_EULA
+            value: "Y"
+          - name: SA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mssql2019
+                key: SA_MSSQL2019_PASSWORD
+          volumeMounts:
+          - mountPath: /var/opt/mssql/data
+            name: mssqldb
+      volumes:
+      - name: mssqldb
+        persistentVolumeClaim:
+          claimName: mssql2019-claim
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mssql2019-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: mssql
+  ports:
+  - name: mssql
+    protocol: TCP
+    port: 1433
+    targetPort: 1433
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mssql2019-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: mssql
+  ports:
+  - protocol: TCP
+    port: 1433
+    targetPort: 1433
+```
+
+#### More information:
+[Kubernetes Storage Volumes](https://kubernetes.io/docs/concepts/storage/volumes/)
+
+[Create a PersistentVolume](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolume)
+
+[Create a PersistentVolumeClaim](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolumeclaim)
+
+[Persistent Storage design document](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/storage/persistent-storage.md)
+
+[Deploy a SQL Server container in Kubernetes](https://docs.microsoft.com/en-us/sql/linux/tutorial-sql-server-containers-kubernetes?view=sql-server-ver15)
+
+
+#### More information : 
+[Build ASP.NET Core applications deployed as Linux containers into an AKS/Kubernetes orchestrator](https://docs.microsoft.com/en-us/dotnet/architecture/containerized-lifecycle/design-develop-containerized-apps/build-aspnet-core-applications-linux-containers-aks-kubernetes)
+
+## Traffic routing : NGINX Ingress Controller
 
 1- To install `NGINX Ingress Controller` on kubernetes, just run the following command:
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.3/deploy/static/provider/cloud/deploy.yaml
 
 ```
-
-Just for information:
-
 To see kubernetes namespaces:
  ```bash
 kubectl get namespaces
@@ -242,7 +389,7 @@ kubectl get services --namespace=ingress-nginx
 
 ```
 
-2- Ingress-nginx will route traffic to 2 different HTTP backend services based on the path name.To achieve this, copy the following commands to new manifest file like `ingress-srv.yaml` and use `kubectl apply -f ingress-srv.yaml`.
+2- Ingress-nginx could route traffic to 2 different HTTP backend services based on the path name. To achieve this, copy the following commands to new manifest file like `ingress-srv.yaml` and use `kubectl apply -f ingress-srv.yaml`.
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -273,7 +420,7 @@ spec:
                   number: 80
 ```
 
-### Edit Your Hosts File on Windows to rout example.com
+### Edit Your Hosts File on Windows to route example.com
 1- Open up the Host file using Notepad:
 ```
 c:\windows\system32\drivers\etc\hosts
@@ -282,26 +429,7 @@ c:\windows\system32\drivers\etc\hosts
 ```
 127.0.0.1 example.com
 ```
-
-
 ###### More information :
-[Deploy on Kubernetes](https://docs.docker.com/desktop/kubernetes/)
-
-[Kubernetes on Windows](https://docs.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/getting-started-kubernetes-windows)
-
-[Install and Set Up kubectl on Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
-
-[Deploy and Access the Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
-
-[Adding Windows nodes](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/adding-windows-nodes/)
-
-[Kubernetes Cluster On Windows Server Worker Nodes](https://www.hostafrica.co.za/blog/new-technologies/install-kubernetes-cluster-windows-server-worker-nodes)
-
-[Windows containers on Azure Kubernetes](https://docs.microsoft.com/en-us/azure/aks/windows-container-cli)
-
-[Kubernetes on AWS](https://aws.amazon.com/kubernetes/)
-
-[Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
 
 [NGINX Ingress Controller Installation Guide](https://kubernetes.github.io/ingress-nginx/deploy/)
 
@@ -312,7 +440,7 @@ c:\windows\system32\drivers\etc\hosts
 ## RPC framework : GRPC
 ## Sysnch Consume APIs : HTTP Client
 ## Message broker : RabbitMQ
-## Datbase : SQL Server (Always on)
+
 ## Datbase : PostgreSql
 ## Datbase : MongoDb
 ## Distributed Cache : Redis

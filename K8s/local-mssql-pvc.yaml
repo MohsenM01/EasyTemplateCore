@@ -1,10 +1,10 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: mssql-claim
+  name: mssql2019-claim
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 200Mi
+      storage: 400Mi
