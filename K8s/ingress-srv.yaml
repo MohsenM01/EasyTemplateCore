@@ -7,17 +7,20 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-    - host: example.com
+    - host: "etc.example.com"
       http:
         paths:
-          - path: /easytemplatecore/api/weather
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: easytemplatecore-clusterip-srv
                 port:
                   number: 80
-          - path: /lateralapp/api/weather
+    - host: "www.example.com"
+      http:
+        paths:
+          - path: /
             pathType: Prefix
             backend:
               service:

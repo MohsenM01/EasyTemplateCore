@@ -51,7 +51,7 @@ namespace LateralApp.Http
         /// <returns></returns>
         public async Task<IEnumerable<CountryDto>> GetCountries(int pageNo, int pageSize)
         {
-            var response = await _httpClient.GetAsync($"{_easyTemplateCoreHttpServiceAddress}/Country/pageNo={pageNo}&pageSize={pageSize}").ConfigureAwait(false);
+            var response = await _httpClient.GetAsync($"{_easyTemplateCoreHttpServiceAddress}/Country/{pageNo}/{pageSize}").ConfigureAwait(false);
             var result = await response.Content.ReadAsStringAsync();
             var countryDtos = JsonSerializer.Deserialize<IEnumerable<CountryDto>>(result);
             return countryDtos;

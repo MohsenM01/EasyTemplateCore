@@ -1,11 +1,12 @@
 using System;
 using System.Text;
 using System.Text.Json;
-using EasyTemplateCore.Dtos.Location.Country;
+using LateralApp.Dtos.Location.Country;
+using LateralApp.MessageBus.Dtos.Location.Country;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 
-namespace EasyTemplateCore.Web.MessageBus
+namespace LateralApp.MessageBus.ProduceMessage
 {
     public class MessageBusClient : IMessageBusClient
     {
@@ -29,23 +30,20 @@ namespace EasyTemplateCore.Web.MessageBus
 
         }
 
-        public void PublishNewCountry(CountryDto countryDto)
+        public void PublishNewCountry(AddCountryDto addCountry)
         {
-            var message = JsonSerializer.Serialize(countryDto);
+            var item = addCountry.ToMessageBusDto();
+            item.EventName = "AddCountry";
+            var message = JsonSerializer.Serialize(item);
 
             if (_connection.IsOpen)
             {
-                SendMessage(message);
+                var body = Encoding.UTF8.GetBytes(message);
+                _channel.BasicPublish("trigger", "", null, body);
                 return;
             }
 
             throw new Exception("RabbitMQ connection is closed.");
-        }
-
-        private void SendMessage(string message)
-        {
-            var body = Encoding.UTF8.GetBytes(message);
-            _channel.BasicPublish("trigger", "", null, body);
         }
 
         public void Dispose()

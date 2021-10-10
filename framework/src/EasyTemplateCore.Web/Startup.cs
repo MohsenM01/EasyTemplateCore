@@ -10,8 +10,7 @@ using EasyTemplateCore.Dtos;
 using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
 using EasyTemplateCore.Web.Grpc;
-using EasyTemplateCore.Web.MessageBus;
-using EasyTemplateCore.Web.MessageBus.EventProcessing;
+using EasyTemplateCore.Web.MessageBus.ConsumeMessage;
 using ElmahCore;
 using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
@@ -92,7 +91,6 @@ namespace EasyTemplateCore.Web
             //https://www.rabbitmq.com/tutorials/tutorial-one-dotnet.html
             services.AddHostedService<MessageBusSubscriber>();
             services.AddSingleton<IEventProcessor, EventProcessor>();
-            services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
             //https://github.com/grpc/grpc-dotnet
             services.AddGrpc();

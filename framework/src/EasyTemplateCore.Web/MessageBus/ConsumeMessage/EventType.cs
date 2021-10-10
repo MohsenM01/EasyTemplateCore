@@ -1,5 +1,5 @@
 ﻿
-namespace EasyTemplateCore.Web.MessageBus.EventProcessing
+namespace EasyTemplateCore.Web.MessageBus.ConsumeMessage
 {
     public enum EventType
     {

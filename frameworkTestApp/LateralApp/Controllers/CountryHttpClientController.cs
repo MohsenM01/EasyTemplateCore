@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LateralApp.Dtos.Location.Country;
 using LateralApp.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LateralApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CountryEasyTemplateCoreHttpClientController : ControllerBase
+    public class CountryHttpClientController : ControllerBase
     {
         private readonly IEasyTemplateCoreHttpClient _easyTemplateCoreHttpClient;
 
@@ -17,7 +18,7 @@ namespace LateralApp.Controllers
         /// Ctor
         /// </summary>
         /// <param name="easyTemplateCoreHttpClient"></param>
-        public CountryEasyTemplateCoreHttpClientController(IEasyTemplateCoreHttpClient easyTemplateCoreHttpClient)
+        public CountryHttpClientController(IEasyTemplateCoreHttpClient easyTemplateCoreHttpClient)
         {
             _easyTemplateCoreHttpClient = easyTemplateCoreHttpClient;
         }
@@ -25,11 +26,20 @@ namespace LateralApp.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="pageNo"></param>
-        /// <param name="pageSize"></param>
         /// <returns></returns>
-        [HttpGet("pageNo={pageNo}&pageSize={pageSize}", Name = "etc-CountryList")]
-        public async Task<ActionResult<IEnumerable<CountryDto>>> CountryList(int pageNo, int pageSize)
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status307TemporaryRedirect)]
+        public IActionResult CountryList()
+        {
+            return RedirectToAction(nameof(CountryList), new { pageNo = 1, pageSize = 10 });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{pageNo}/{pageSize}", Name = "etc-CountryList")]
+        public async Task<ActionResult<IEnumerable<CountryDto>>> CountryList(int pageNo , int pageSize )
         {
             return Ok(await _easyTemplateCoreHttpClient.GetCountries(pageNo, pageSize));
         }

@@ -1,13 +1,12 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EasyTemplateCore.Web.MessageBus.EventProcessing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace EasyTemplateCore.Web.MessageBus
+namespace EasyTemplateCore.Web.MessageBus.ConsumeMessage
 {
     public class MessageBusSubscriber : BackgroundService
     {

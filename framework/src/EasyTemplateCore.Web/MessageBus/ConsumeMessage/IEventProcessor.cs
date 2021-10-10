@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace EasyTemplateCore.Web.MessageBus.EventProcessing
+namespace EasyTemplateCore.Web.MessageBus.ConsumeMessage
 {
     public interface IEventProcessor
     {

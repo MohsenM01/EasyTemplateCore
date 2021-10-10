@@ -18,6 +18,21 @@ Localization
 Globalization
 
 ## ORM : Entity Framework Core
+What is it?
+
+EF Core is a modern object-database mapper for .NET. It supports LINQ queries, change tracking, updates, and schema migrations. EF Core works with SQL Server, Azure SQL Database, SQLite, Azure Cosmos DB, MySQL, PostgreSQL, and other databases through a provider plugin API.
+
+Why we use it (Advantages, Disadvantage)?
+
+EF Core can serve as an object-relational mapper (O/RM), which:
+
+    Enables .NET developers to work with a database using .NET objects.
+    Eliminates the need for most of the data-access code that typically needs to be written.
+
+EF Core supports many database engines, see [Database Providers](https://docs.microsoft.com/en-us/ef/core/providers/) for details.
+
+How we use it?
+[Getting Started with EF Core](https://docs.microsoft.com/en-us/ef/core/get-started/overview/first-app)
 
 To add your first migration, In web project folder, run the following command in VSCode Terminal or CMD:
 
@@ -30,9 +45,34 @@ dotnet ef migrations add InitialCreate
 
 
 ## Object mapper : Automapper
+What is it?
+
+AutoMapper is a simple little library built to solve a deceptively complex problem - getting rid of code that mapped one object to another
+
+Why should we use it (Advantages, Disadvantage)?
+
+Mapping code is boring. Testing mapping code is even more boring. AutoMapper provides simple configuration of types, as well as simple testing of mappings. The real question may be “why use object-object mapping?” Mapping can occur in many places in an application, but mostly in the boundaries between layers, such as between the UI/Domain layers, or Service/Domain layers. Concerns of one layer often conflict with concerns in another, so object-object mapping leads to segregated models, where concerns for each layer can affect only types in that layer.
+
+How can we use it?
+[Getting Started Guide with AutoMapper](https://docs.automapper.org/en/stable/Getting-started.html)
+
+
+
+#### More information :
+
+[ASP.NET Core Example using AutoMapper](https://docs.automapper.org/en/stable/Dependency-injection.html)
+
 ## Errors Log Library : Log Elmah
+
+#### More information : 
+[Using ElmahCore](https://github.com/ElmahCore/ElmahCore)
+
 ## Authentication : ASP.NET Core Identity
+
+
 ## Real-time web functionality : ASP.NET Core SignalR
+
+
 ## Platform as a service (PaaS) - Container : Docker
 Download and install docker desktop:
 (Docker Desktop)[https://www.docker.com/products/docker-desktop]
@@ -434,6 +474,7 @@ spec:
 [RabbitMQ Cluster Kubernetes Operator Quickstart](https://www.rabbitmq.com/kubernetes/operator/quickstart-operator.html)
 
 [Installing RabbitMQ Cluster Operator in a Kubernetes Cluster](https://www.rabbitmq.com/kubernetes/operator/install-operator.html)
+
 ## Deploy EasyTemplateCore on Kubernetes
 To create `Deployment` for `EasyTemplateCore` copy the following commands to new manifest file like `easytemplatecore-depl.yaml` and use `kubectl apply -f easytemplatecore-depl.yaml` command to create it.
 
@@ -544,6 +585,7 @@ c:\windows\system32\drivers\etc\hosts
 127.0.0.1 example.com
 ```
 ###### More information :
+[Services, Load Balancing, and Networking on Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 
 [NGINX Ingress Controller Installation Guide](https://kubernetes.github.io/ingress-nginx/deploy/)
 
@@ -552,23 +594,47 @@ c:\windows\system32\drivers\etc\hosts
 [How to Edit Your Hosts File on Windows, Mac, or Linux](https://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/)
 
 ## RPC framework : GRPC
+
 ## Sysnch Consume APIs : HTTP Client
+
+#### More information : 
+[Create a web API with ASP.NET Core](https://docs.microsoft.com/en-us/learn/modules/build-web-api-aspnet-core/)
+
 ## Message broker : RabbitMQ
 
+#### More information:
+
+[RabbitMQ Tutorials](https://www.rabbitmq.com/getstarted.html)
+
 ## Datbase : PostgreSql
+
 ## Datbase : MongoDb
+
 ## Distributed Cache : Redis
+
 ## Command and Query : CQRS
+
 ## search and analytics engine : Elasticsearch
+
 ## IDL - Describing REST APIs : Swagger
+
+#### More information : 
+[ASP.NET Core web API documentation with Swagger / OpenAPI](https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger)
+
 ## UnitTest : NUnit
+
 ## Integrated Test : FakeHttpContext
+
 ## Mocking library : Moq
+
 ## Test API : Postman
 
 ## Traffic routing controller : Ingress
+
 ## CI/CD : github Actions
+
 ## Cloud Services : AWS
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)

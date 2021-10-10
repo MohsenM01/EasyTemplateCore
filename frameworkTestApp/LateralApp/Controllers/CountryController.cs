@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LateralApp.Dtos.Location.Country;
 using LateralApp.Services.Location.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LateralApp.Controllers
@@ -25,10 +26,21 @@ namespace LateralApp.Controllers
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status307TemporaryRedirect)]
+        public IActionResult CountryList()
+        {
+            return RedirectToAction(nameof(CountryList), new { pageNo = 1, pageSize = 10 });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="pageNo"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        [HttpGet("pageNo={pageNo}&pageSize={pageSize}", Name = "CountryList")]
+        [HttpGet("{pageNo}/{pageSize}", Name = "CountryList")]
         public async Task<ActionResult<IEnumerable<CountryDto>>> CountryList(int pageNo, int pageSize)
         {
             return Ok(await _countryService.GetCountriesAsync(pageNo, pageSize));
@@ -89,7 +101,7 @@ namespace LateralApp.Controllers
             {
                 return NotFound();
             }
-            var result = await _countryService.EditCountryAsync(id,editCountryDto);
+            var result = await _countryService.EditCountryAsync(id, editCountryDto);
             if (result.IsFailure)
             {
                 //TODO Return errors

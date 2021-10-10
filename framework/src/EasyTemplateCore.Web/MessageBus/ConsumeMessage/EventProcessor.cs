@@ -5,7 +5,7 @@ using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EasyTemplateCore.Web.MessageBus.EventProcessing
+namespace EasyTemplateCore.Web.MessageBus.ConsumeMessage
 {
     public class EventProcessor : IEventProcessor
     {
@@ -34,7 +34,7 @@ namespace EasyTemplateCore.Web.MessageBus.EventProcessing
 
             if (eventType == null) throw new ArgumentNullException(nameof(eventType));
 
-            return eventType.Event switch
+            return eventType.EventName switch
             {
                 "AddCountry" => EventType.AddCountry,
                 _ => EventType.Undetermined
