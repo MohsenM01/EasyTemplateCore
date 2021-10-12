@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using CountryService;
 using EasyTemplateCore.Dtos.Location.Country;
+using GrpcServer.CountryService;
 
-namespace EasyTemplateCore.Web.Grpc
+namespace EasyTemplateCore.Web.Grpc.Server.Country
 {
-    public class CountryGrpcProfile : Profile
+    public class GrpcCountryProfile : Profile
     {
         /// <summary>
         /// 
         /// </summary>
-        public CountryGrpcProfile()
+        public GrpcCountryProfile()
         {
             CreateMap<CountryDto, GrpcCountryModel>();
         }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -88,12 +87,6 @@ namespace EasyTemplateCore.Services.Location.Interfaces
         /// <param name="pageSize"></param>
         /// <returns></returns>
         Task<IEnumerable<CountryDto>> GetCountriesAsync(int pageNo, int pageSize);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<CountryDto>> GetAllAsync();
     }
 
 }

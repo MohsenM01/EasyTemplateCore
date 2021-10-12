@@ -15,8 +15,8 @@ namespace LateralApp.Http
     public class EasyTemplateCoreHttpClient : IEasyTemplateCoreHttpClient
     {
         private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
         private readonly string _easyTemplateCoreHttpServiceAddress;
+
         /// <summary>
         /// 
         /// </summary>
@@ -25,8 +25,7 @@ namespace LateralApp.Http
         public EasyTemplateCoreHttpClient(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _configuration = configuration;
-            _easyTemplateCoreHttpServiceAddress = _configuration["EasyTemplateCoreHttpServiceAddress"];
+            _easyTemplateCoreHttpServiceAddress = configuration["EasyTemplateCoreHttpServiceAddress"];
         }
 
         /// <summary>

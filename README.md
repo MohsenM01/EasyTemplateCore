@@ -10,7 +10,7 @@ Done:
 The project is being developed
 ******************************
 Active ( Will have):
-
+AutoMapper
 Framework : ASP.NET Core
 
 Localization
@@ -25,9 +25,8 @@ EF Core is a modern object-database mapper for .NET. It supports LINQ queries, c
 Why we use it (Advantages, Disadvantage)?
 
 EF Core can serve as an object-relational mapper (O/RM), which:
-
-    Enables .NET developers to work with a database using .NET objects.
-    Eliminates the need for most of the data-access code that typically needs to be written.
+Enables .NET developers to work with a database using .NET objects.
+Eliminates the need for most of the data-access code that typically needs to be written.
 
 EF Core supports many database engines, see [Database Providers](https://docs.microsoft.com/en-us/ef/core/providers/) for details.
 
@@ -37,7 +36,6 @@ How we use it?
 To add your first migration, In web project folder, run the following command in VSCode Terminal or CMD:
 
 ``` bash
-
 dotnet ef migrations add InitialCreate
 ```
 ###### More information :
@@ -73,13 +71,13 @@ How can we use it?
 ## Real-time web functionality : ASP.NET Core SignalR
 
 
-## Platform as a service (PaaS) - Container : Docker
+## Platform as a service (PaaS) - Container : DockerAutoMapper
 Download and install docker desktop:
-(Docker Desktop)[https://www.docker.com/products/docker-desktop]
+
+[Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 1- Create a Dockerfile in solution folder.
 ``` bash
-
 # syntax=docker/dockerfile:1
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
@@ -122,7 +120,6 @@ ENTRYPOINT ["dotnet", "EasyTemplateCore.Web.dll"]
 2- To Build the Docker Image, In solution folder, run the following command in VSCode Terminal or CMD:
 
 ```diff
-
 - Don't forget to add . at the end of command
 ```
 
@@ -282,6 +279,8 @@ kubectl proxy
 
 [Guide for scheduling Windows containers in Kubernetes](https://kubernetes.io/docs/setup/production-environment/windows/user-guide-windows-containers/)
 
+[kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
+
 ## Datbase : SQL Server (Always on)
 
 1- To create `Persistent Volume Claim` copy the following commands to new manifest file like `local-mssql-pvc.yaml` and use `kubectl apply -f local-mssql-pvc.yaml` command to create them.
@@ -389,6 +388,9 @@ spec:
     targetPort: 1433
 ```
 
+**IMPORTANT** Stop MSSQL on your machine, if you want to connect via SQL Server Management Studio
+
+
 #### More information:
 [Kubernetes Storage Volumes](https://kubernetes.io/docs/concepts/storage/volumes/)
 
@@ -475,50 +477,6 @@ spec:
 
 [Installing RabbitMQ Cluster Operator in a Kubernetes Cluster](https://www.rabbitmq.com/kubernetes/operator/install-operator.html)
 
-## Deploy EasyTemplateCore on Kubernetes
-To create `Deployment` for `EasyTemplateCore` copy the following commands to new manifest file like `easytemplatecore-depl.yaml` and use `kubectl apply -f easytemplatecore-depl.yaml` command to create it.
-
-```yaml
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  name: easytemplatecore-depl
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: easytemplatecore
-  template:
-    metadata:
-      labels:
-        app: easytemplatecore
-    spec:
-      containers:
-        - name: easytemplatecore
-          image: mohsen01/easytemplatecore:latest
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: easytemplatecore-clusterip-srv
-spec:
-  type: ClusterIP
-  selector:
-    app: easytemplatecore
-  ports:
-  - name: easytemplatecore
-    protocol: TCP
-    port: 80
-    targetPort: 80
-  - name: easytemplatecoregrpc
-    protocol: TCP
-    port: 8000
-    targetPort: 8000
-```
-
-#### More information : 
-[Build ASP.NET Core applications deployed as Linux containers into an AKS/Kubernetes orchestrator](https://docs.microsoft.com/en-us/dotnet/architecture/containerized-lifecycle/design-develop-containerized-apps/build-aspnet-core-applications-linux-containers-aks-kubernetes)
-
 ## Traffic routing : NGINX Ingress Controller
 
 1- To install `NGINX Ingress Controller` on kubernetes, just run the following command:
@@ -556,17 +514,20 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-    - host: example.com
+    - host: "etc.example.com"
       http:
         paths:
-          - path: /easytemplatecore/api/weather
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: easytemplatecore-clusterip-srv
                 port:
                   number: 80
-          - path: /lateralapp/api/weather
+    - host: "www.example.com"
+      http:
+        paths:
+          - path: /
             pathType: Prefix
             backend:
               service:
@@ -584,6 +545,9 @@ c:\windows\system32\drivers\etc\hosts
 ```
 127.0.0.1 example.com
 ```
+**IMPORTANT** Stop IIS on your machine to see example.com
+
+
 ###### More information :
 [Services, Load Balancing, and Networking on Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 
@@ -594,6 +558,50 @@ c:\windows\system32\drivers\etc\hosts
 [How to Edit Your Hosts File on Windows, Mac, or Linux](https://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/)
 
 ## RPC framework : GRPC
+
+1-In Server App install package (EasyTemplateCore in this example):
+``` bash
+Install-Package Grpc.AspNetCore
+```
+
+2- Install this packages In client app (LateralApp in this example):
+
+``` bash
+Install-Package Grpc.Net.Client
+
+Install-Package Google.Protobuf
+
+Install-Package Grpc.Tools
+
+```
+
+#### More information:
+
+[gRPC](https://grpc.io/)
+
+[gRPC Quick start](https://grpc.io/docs/languages/csharp/quickstart/)
+
+[Tutorial: Create a gRPC client and server in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/tutorials/grpc/grpc-start)
+
+[Create Protobuf messages for .NET apps](https://docs.microsoft.com/en-us/aspnet/core/grpc/protobuf)
+
+[Versioning gRPC services](https://docs.microsoft.com/en-us/aspnet/core/grpc/versioning)
+
+[protocol-buffers Style Guide](https://developers.google.com/protocol-buffers/docs/style)
+
+[Troubleshoot gRPC on .NET Core](https://docs.microsoft.com/en-us/aspnet/core/grpc/troubleshoot?view=aspnetcore-5.0)
+
+[gRPC on .NET supported platforms](https://docs.microsoft.com/en-us/aspnet/core/grpc/supported-platforms)
+
+[Use gRPC in browser apps](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser)
+
+[gRPC services with ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/grpc/aspnetcore)
+
+[Publish two different endpoints on Kestrel for two different endpoints on ASP.NET Core](https://stackoverflow.com/questions/57273862/publish-two-different-endpoints-on-kestrel-for-two-different-endpoints-on-asp-ne)
+
+[Getting Started with ASP.NET Core and gRPC](https://blog.jetbrains.com/dotnet/2021/07/19/getting-started-with-asp-net-core-and-grpc/)
+
+[Kestrel web server implementation in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel)
 
 ## Sysnch Consume APIs : HTTP Client
 
@@ -620,6 +628,88 @@ c:\windows\system32\drivers\etc\hosts
 
 #### More information : 
 [ASP.NET Core web API documentation with Swagger / OpenAPI](https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger)
+
+
+## Deploy EasyTemplateCore on Kubernetes
+To create `Deployment` for `EasyTemplateCore` copy the following commands to new manifest file like `easytemplatecore-depl.yaml` and use `kubectl apply -f easytemplatecore-depl.yaml` command to create it.
+
+```yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: easytemplatecore-depl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: easytemplatecore
+  template:
+    metadata:
+      labels:
+        app: easytemplatecore
+    spec:
+      containers:
+        - name: easytemplatecore
+          image: mohsen01/easytemplatecore:latest
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: easytemplatecore-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: easytemplatecore
+  ports:
+  - name: easytemplatecore
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  - name: easytemplatecoregrpc
+    protocol: TCP
+    port: 6000
+    targetPort: 6000
+```
+
+#### More information : 
+[Build ASP.NET Core applications deployed as Linux containers into an AKS/Kubernetes orchestrator](https://docs.microsoft.com/en-us/dotnet/architecture/containerized-lifecycle/design-develop-containerized-apps/build-aspnet-core-applications-linux-containers-aks-kubernetes)
+
+## Deploy LateralApp on Kubernetes
+To create `Deployment` for `LateralApp` copy the following commands to new manifest file like `lateralapp-depl.yaml` and use `kubectl apply -f lateralapp-depl.yaml` command to create it.
+
+```yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: lateralapp-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lateralapp
+  template:
+    metadata:
+      labels:
+        app: lateralapp
+    spec:
+      containers:
+        - name: lateralapp
+          image: mohsen01/lateralapp:latest
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: lateralapp-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: lateralapp
+  ports:
+  - name: lateralapp
+    protocol: TCP
+    port: 80
+    targetPort: 80 
+```
 
 ## UnitTest : NUnit
 

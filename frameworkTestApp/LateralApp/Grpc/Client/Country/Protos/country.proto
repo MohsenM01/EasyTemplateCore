@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "GrpcClient.CountryService";
+
+service GrpcCountry {
+	rpc GetCountries (GrpcCountryRequestModel) returns (GrpcCountryResponseModel);
+}
+
+message GrpcCountryRequestModel {
+	int32 pageNo=1;
+	int32 pageSize=2;
+}
+
+message GrpcCountryModel{
+	string id = 1;
+	string country_abbr = 2;
+	int32 country_no = 3;
+	string country_name = 4;
+	google.protobuf.StringValue remark = 5;
+}
+
+message GrpcCountryResponseModel {
+	repeated GrpcCountryModel countries = 1;
+}

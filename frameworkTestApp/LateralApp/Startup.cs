@@ -3,8 +3,8 @@ using AutoMapper;
 using LateralApp.Data;
 using LateralApp.Dtos;
 using LateralApp.Dtos.Location.Country;
+using LateralApp.Grpc.Client.Country;
 using LateralApp.Http;
-using LateralApp.MessageBus.ProduceMessage;
 using LateralApp.Services.Location;
 using LateralApp.Services.Location.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -40,7 +40,10 @@ namespace LateralApp
             // Automapper => Automatically scanning for profiles
             var configuration =
                 new MapperConfiguration(cfg =>
-                    cfg.AddMaps(Assembly.GetAssembly(typeof(CountryProfile))));
+                    cfg.AddMaps(
+                        Assembly.GetAssembly(typeof(CountryProfile)),
+                        Assembly.GetAssembly(typeof(GrpcCountryProfile))
+                    ));
             //configuration.AssertConfigurationIsValid();
             AutoMapperConfiguration.Init(configuration);
 
@@ -54,7 +57,8 @@ namespace LateralApp
             services.AddScoped<LateralAppContext>();
             services.AddScoped<ICountryService, CountryService>();
             services.AddHttpClient<IEasyTemplateCoreHttpClient, EasyTemplateCoreHttpClient>();
-            services.AddSingleton<IMessageBusClient, MessageBusClient>();
+            services.AddScoped<IEasyTemplateCoreHttpClient, EasyTemplateCoreHttpClient>();
+            services.AddSingleton<IEasyTemplateCoreGrpcClient, EasyTemplateCoreGrpcClient>();
 
             services.AddSwaggerGen(c =>
             {

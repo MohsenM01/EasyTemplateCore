@@ -11,13 +11,6 @@
     <PackageReference Include="AspNetCoreRateLimit" Version="4.0.1" />
     <PackageReference Include="DNTCommon.Web.Core" Version="2.9.4" />
     <PackageReference Include="ElmahCore" Version="2.0.7" />
-    <PackageReference Include="Google.Protobuf" Version="3.18.1" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
-    <PackageReference Include="Grpc.Net.Client" Version="2.40.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.41.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.10" />
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.16.0" />
@@ -28,6 +21,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -38,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Grpc\Protos\countries.proto" GrpcServices="Server" />
+    <Protobuf Include="Grpc\Server\Country\Protos\country.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

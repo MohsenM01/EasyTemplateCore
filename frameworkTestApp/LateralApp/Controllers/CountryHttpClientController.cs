@@ -38,7 +38,7 @@ namespace LateralApp.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{pageNo}/{pageSize}", Name = "etc-CountryList")]
+        [HttpGet("{pageNo}/{pageSize}", Name = "etc-http-CountryList")]
         public async Task<ActionResult<IEnumerable<CountryDto>>> CountryList(int pageNo , int pageSize )
         {
             return Ok(await _easyTemplateCoreHttpClient.GetCountries(pageNo, pageSize));

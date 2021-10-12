@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using EasyTemplateCore.Data;
@@ -268,15 +267,6 @@ namespace EasyTemplateCore.Services.Location
             var countriesQuery = _country.AsNoTracking();
             countriesQuery = countriesQuery.ApplyPaging(pageNo, pageSize);
             return await countriesQuery.ProjectTo<CountryDto>().ToListAsync();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<CountryDto>> GetAllAsync()
-        {
-            return await _country.OrderBy(a => a.CountryName).AsNoTracking().ProjectTo<CountryDto>().ToListAsync();
         }
 
         #endregion

@@ -9,7 +9,7 @@ using EasyTemplateCore.Data;
 using EasyTemplateCore.Dtos;
 using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
-using EasyTemplateCore.Web.Grpc;
+using EasyTemplateCore.Web.Grpc.Server.Country;
 using EasyTemplateCore.Web.MessageBus.ConsumeMessage;
 using ElmahCore;
 using ElmahCore.Mvc;
@@ -113,7 +113,10 @@ namespace EasyTemplateCore.Web
             // Automapper => Automatically scanning for profiles
             var configuration =
                 new MapperConfiguration(cfg =>
-                    cfg.AddMaps(Assembly.GetAssembly(typeof(CountryProfile)), Assembly.GetAssembly(typeof(CountryGrpcProfile))));
+                    cfg.AddMaps(
+                        Assembly.GetAssembly(typeof(CountryProfile)),
+                        Assembly.GetAssembly(typeof(GrpcCountryProfile))
+                        ));
             //configuration.AssertConfigurationIsValid();
             AutoMapperConfiguration.Init(configuration);
 
@@ -203,7 +206,7 @@ namespace EasyTemplateCore.Web
             //https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-5.0
             app.UseResponseCompression();  // Adds the response compression to the request pipeline
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
 
             app.UseRouting();
