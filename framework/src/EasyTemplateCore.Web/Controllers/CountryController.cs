@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
+using EasyTemplateCore.Web.RedisCache;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,6 +42,7 @@ namespace EasyTemplateCore.Web.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet("{pageNo}/{pageSize}", Name = "CountryList")]
+        [Cached]
         public async Task<ActionResult<IEnumerable<CountryDto>>> CountryList(int pageNo, int pageSize)
         {
             return Ok(await _countryService.GetCountriesAsync(pageNo, pageSize));

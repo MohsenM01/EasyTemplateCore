@@ -67,11 +67,12 @@ How can we use it?
 
 ## Authentication : ASP.NET Core Identity
 
+## Authentication : JWT
 
 ## Real-time web functionality : ASP.NET Core SignalR
 
 
-## Platform as a service (PaaS) - Container : DockerAutoMapper
+## Platform as a service (PaaS) - Container : Docker
 Download and install docker desktop:
 
 [Docker Desktop](https://www.docker.com/products/docker-desktop)
@@ -619,6 +620,197 @@ Install-Package Grpc.Tools
 ## Datbase : MongoDb
 
 ## Distributed Cache : Redis
+1-Copy the following commands to new manifest file like `redis-config.yaml` and use `kubectl apply -f redis-config.yaml`.
+``` yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: etc-redis-config
+data:
+  redis-config: |
+    maxmemory 200mb
+    maxmemory-policy allkeys-lru
+```
+2-Copy the following commands to new manifest file like `redis-depl.yaml` and use `kubectl apply -f redis-depl.yaml`.
+``` yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:6.2.6
+        command:
+          - redis-server
+          - "/redis-master/redis.conf"
+        env:
+        - name: MASTER
+          value: "true"
+        ports:
+        - containerPort: 6379
+        resources:
+          limits:
+            cpu: "0.1"
+        volumeMounts:
+        - mountPath: /redis-master-data
+          name: data
+        - mountPath: /redis-master
+          name: config
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: etc-redis-config
+            items:
+            - key: redis-config
+              path: redis.conf
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: redis
+  ports:
+  - name: redis
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
+```
+
+#### More information : 
+
+[Distributed caching in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed)
+
+[Redis Enterprise Software on Kubernetes](https://docs.redis.com/latest/kubernetes/)
+
+[Configuring Redis using a ConfigMap](https://kubernetes.io/docs/tutorials/configuration/configure-redis-using-configmap/)
+
+[Redis cluster tutorial](https://redis.io/topics/cluster-tutorial)
+
+[Deploy Redis Enterprise Software on Kubernetes](https://docs.redis.com/latest/kubernetes/deployment/quick-start/)
+
+## TODO : HybridCachingProvider : EasyCaching
+
+HybridCachingProvider will combine local caching and distributed caching together.
+
+The most important problem that this caching provider solves is that it keeps the newest local cached value.
+
+When we modify a cached value, the provider will send a message to 'EasyCaching' Bus so that it can notify other Apps to remove the old value.
+
+The following image shows how it runs.
+
+![Hybrid Caching overview](https://raw.githubusercontent.com/dotnetcore/EasyCaching/master/media/hybrid_details.png)
+
+
+1. Install the packages via Nuget
+
+```bash
+Install-Package EasyCaching.HybridCache
+Install-Package EasyCaching.InMemory
+Install-Package EasyCaching.Redis
+Install-Package EasyCaching.Bus.Redis
+```
+2. Config in Startup class
+
+```csharp
+public class Startup
+{
+    //...
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddMvc();
+
+        services.AddEasyCaching(option =>
+        {
+            // local
+            option.UseInMemory("m1");
+            // distributed
+            option.UseRedis(config =>
+            {
+                config.DBConfig.Endpoints.Add(new Core.Configurations.ServerEndPoint("127.0.0.1", 6379));
+                config.DBConfig.Database = 5;
+            }, "myredis");
+
+            // combine local and distributed
+            option.UseHybrid(config =>
+            {
+                config.TopicName = "test-topic";
+                config.EnableLogging = false;
+
+                // specify the local cache provider name after v0.5.4
+                config.LocalCacheProviderName = "m1";
+                // specify the distributed cache provider name after v0.5.4
+                config.DistributedCacheProviderName = "myredis";
+            })
+            // use redis bus
+            .WithRedisBus(busConf => 
+            {
+                busConf.Endpoints.Add(new ServerEndPoint("127.0.0.1", 6380));
+            });
+        });
+    }
+}
+```
+
+3. Call IHybridCachingProvider
+
+Following code shows how to use EasyCachingProvider in ASP.NET Core Web API.
+
+```csharp
+[Route("api/[controller]")]
+public class ValuesController : Controller
+{
+    private readonly IHybridCachingProvider _provider;
+
+    public ValuesController(IHybridCachingProvider provider)
+    {
+        this._provider = provider;
+    }
+
+    [HttpGet]
+    public string Get()
+    {
+        //Set
+        _provider.Set("demo", "123", TimeSpan.FromMinutes(1));
+
+        //others
+        //...
+    }
+}
+```
+#### More information : 
+
+[EasyCaching](https://github.com/dotnetcore/EasyCaching)
+
+[What is HybridCaching](https://easycaching.readthedocs.io/en/latest/Hybrid/)
 
 ## Command and Query : CQRS
 
@@ -627,8 +819,8 @@ Install-Package Grpc.Tools
 ## IDL - Describing REST APIs : Swagger
 
 #### More information : 
-[ASP.NET Core web API documentation with Swagger / OpenAPI](https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger)
 
+[ASP.NET Core web API documentation with Swagger / OpenAPI](https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger)
 
 ## Deploy EasyTemplateCore on Kubernetes
 To create `Deployment` for `EasyTemplateCore` copy the following commands to new manifest file like `easytemplatecore-depl.yaml` and use `kubectl apply -f easytemplatecore-depl.yaml` command to create it.
@@ -718,8 +910,6 @@ spec:
 ## Mocking library : Moq
 
 ## Test API : Postman
-
-## Traffic routing controller : Ingress
 
 ## CI/CD : github Actions
 

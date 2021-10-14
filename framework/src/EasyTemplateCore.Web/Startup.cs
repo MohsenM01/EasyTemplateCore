@@ -11,6 +11,7 @@ using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
 using EasyTemplateCore.Web.Grpc.Server.Country;
 using EasyTemplateCore.Web.MessageBus.ConsumeMessage;
+using EasyTemplateCore.Web.RedisCache;
 using ElmahCore;
 using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
@@ -57,9 +58,12 @@ namespace EasyTemplateCore.Web
             //services.AddDistributedRateLimiting<RedisProcessingStrategy>();
             //services.AddRedisRateLimiting();
 
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
             //https://docs.microsoft.com/en-us/aspnet/core/signalr/configuration?view=aspnetcore-5.0&tabs=dotnet
             services.AddSignalR()
-                .AddJsonProtocol(options => {
+                .AddJsonProtocol(options =>
+                {
                     options.PayloadSerializerOptions.PropertyNameCaseInsensitive = true;
                     options.PayloadSerializerOptions.WriteIndented = true;
                     options.PayloadSerializerOptions.PropertyNamingPolicy = null;
@@ -94,9 +98,6 @@ namespace EasyTemplateCore.Web
 
             //https://github.com/grpc/grpc-dotnet
             services.AddGrpc();
-
-            //https://github.com/stefanprodan/AspNetCoreRateLimit
-            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
             services.AddSwaggerGen(c =>
             {
@@ -169,6 +170,13 @@ namespace EasyTemplateCore.Web
                 options.LogPath = "~/ElmahLogs"; // OR options.LogPath = "с:\errors";
             });
 
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration["ConnectionStrings:EasyTemplateCoreRedis"];
+            });
+
+            //Register Custom Services
+            services.AddSingleton<RedisCache.ICacheService, CacheService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -206,7 +214,7 @@ namespace EasyTemplateCore.Web
             //https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-5.0
             app.UseResponseCompression();  // Adds the response compression to the request pipeline
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
 
             app.UseRouting();
