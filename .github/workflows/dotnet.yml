@@ -7,10 +7,12 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  build_and_test:
+    runs-on: $
+    strategy:
+      matrix:
+        os: [macOS-latest, ubuntu-latest, windows-latest]
+        
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -24,6 +26,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./framework/
     - name: Build
-      run: dotnet build --no-restore ./framework/
+      run: dotnet build --no-restore ./framework/ --configuration Release
     - name: Test
-      run: dotnet test --no-build --verbosity normal ./framework/
+      run: dotnet test --no-build --verbosity normal ./framework/ --configuration Release
