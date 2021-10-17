@@ -929,6 +929,63 @@ spec:
 
 ## CI/CD : github Actions
 
+-Build & Test & Artifact
+
+```yaml
+name: ASP.NET Core CI
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - 'readme.md'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - 'readme.md'
+
+jobs:
+  build_and_test:
+    if: contains(toJson(github.event.commits), '[SKIP CI]') == false
+    runs-on: ubuntu-latest
+        
+    steps:
+    - name: Dump GitHub Context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+      
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: where are we
+      run: pwd
+    - name: list some key files
+      run: ls
+    - name: Restore dependencies
+      run: dotnet restore ./framework/
+    - name: Build
+      run: dotnet build --no-restore ./framework/ --configuration Release
+    - name: Test
+      run: dotnet test --no-build --verbosity normal ./framework/ --configuration Release
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: EasyTemplateCore
+        path: ./framework/src/EasyTemplateCore.Web/bin/Release
+```
+
+#### More information : 
+
+[checkout](https://github.com/actions/checkout)
+
+[setup-dotnet](https://github.com/actions/setup-dotnet)
+
+[upload-artifact](https://github.com/actions/upload-artifact)
+
 ## Cloud Services : AWS
 
 ## License
