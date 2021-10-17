@@ -17,9 +17,13 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+    - name: where are we
+      run: pwd
+    - name: list some key files
+      run: ls
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./framework/
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore ./framework/
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal ./framework/
