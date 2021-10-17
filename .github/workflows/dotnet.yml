@@ -12,12 +12,15 @@ on:
 
 jobs:
   build_and_test:
-    runs-on: $
-    strategy:
-      matrix:
-        os: [macOS-latest, ubuntu-latest, windows-latest]
+    if: contains(toJson(github.event.commits), '[SKIP CI]') == false
+    runs-on: ubuntu-latest
         
     steps:
+    - name: Dump GitHub Context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+      
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
@@ -33,3 +36,9 @@ jobs:
       run: dotnet build --no-restore ./framework/ --configuration Release
     - name: Test
       run: dotnet test --no-build --verbosity normal ./framework/ --configuration Release
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: Release_Artifacts
+        path: src\bin\Release
