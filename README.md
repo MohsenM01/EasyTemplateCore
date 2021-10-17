@@ -823,6 +823,7 @@ public class ValuesController : Controller
 [ASP.NET Core web API documentation with Swagger / OpenAPI](https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger)
 
 ## Deploy EasyTemplateCore on Kubernetes
+
 To create `Deployment` for `EasyTemplateCore` copy the following commands to new manifest file like `easytemplatecore-depl.yaml` and use `kubectl apply -f easytemplatecore-depl.yaml` command to create it.
 
 ```yaml
@@ -905,9 +906,24 @@ spec:
 
 ## UnitTest : NUnit
 
-## Integrated Test : FakeHttpContext
 
-## Mocking library : Moq
+#### More information : 
+
+[NUnit Documentation Site](https://docs.nunit.org/index.html)
+
+[moq - mocking library](https://github.com/moq/moq4)
+
+[Coverlet - code coverage](https://github.com/coverlet-coverage/coverlet)
+
+[Unit test](https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing)
+
+[FluentAssertions](https://github.com/fluentassertions/fluentassertions)
+
+## Integrated Test : xUnit
+
+#### More information : 
+
+[Integration tests in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests)
 
 ## Test API : Postman
 
