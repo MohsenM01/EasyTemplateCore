@@ -38,7 +38,17 @@ jobs:
       run: dotnet test --no-build --verbosity normal ./framework/ --configuration Release
       
     - name: Upload Artifact
-      uses: actions/upload-artifact@v1.0.0
+      uses: actions/upload-artifact@v2
       with:
         name: Release_Artifacts
         path: ./framework/src/EasyTemplateCore.Web/bin/Release
+
+    - name: Download Artifact
+      uses: actions/checkout@v2
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: my-artifact
+    
+  - name: Display structure of downloaded files
+    run: ls -R
