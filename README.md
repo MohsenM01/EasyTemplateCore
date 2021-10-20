@@ -17,7 +17,16 @@ Localization
 
 Globalization
 
+## Asp.net core
+
+###### More information :
+
+(ASP.NET documentation)[https://docs.microsoft.com/en-us/aspnet/core/]
+
+(Handle errors in ASP.NET Core)[https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling]
+
 ## ORM : Entity Framework Core
+
 What is it?
 
 EF Core is a modern object-database mapper for .NET. It supports LINQ queries, change tracking, updates, and schema migrations. EF Core works with SQL Server, Azure SQL Database, SQLite, Azure Cosmos DB, MySQL, PostgreSQL, and other databases through a provider plugin API.
@@ -39,6 +48,7 @@ To add your first migration, In web project folder, run the following command in
 dotnet ef migrations add InitialCreate
 ```
 ###### More information :
+
 [Migrations Overview](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli)
 
 
@@ -63,9 +73,19 @@ How can we use it?
 ## Errors Log Library : Log Elmah
 
 #### More information : 
+
 [Using ElmahCore](https://github.com/ElmahCore/ElmahCore)
 
 ## Authentication : ASP.NET Core Identity
+
+#### More information : 
+
+[Overview of ASP.NET Core authentication](https://docs.microsoft.com/en-us/aspnet/core/security/authentication)
+
+[Introduction to Identity on ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity)
+
+[Migrate Authentication and Identity to ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/migration/identity)
+
 
 ## Authentication : JWT
 

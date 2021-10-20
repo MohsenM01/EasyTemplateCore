@@ -11,12 +11,14 @@ using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
 using EasyTemplateCore.Web.Grpc.Server.Country;
 using EasyTemplateCore.Web.MessageBus.ConsumeMessage;
+using EasyTemplateCore.Web.Models;
 using EasyTemplateCore.Web.RedisCache;
 using ElmahCore;
 using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -85,7 +87,7 @@ namespace EasyTemplateCore.Web
                 });
             });
 
-            services.AddControllers().AddJsonOptions(options =>
+            services.AddControllersWithViews().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 options.JsonSerializerOptions.WriteIndented = true;
@@ -177,6 +179,18 @@ namespace EasyTemplateCore.Web
 
             //Register Custom Services
             services.AddSingleton<RedisCache.ICacheService, CacheService>();
+
+
+            //ASP.NET Core Identity
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("EasyTemplateCoreContext")));
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -219,11 +233,24 @@ namespace EasyTemplateCore.Web
 
             app.UseRouting();
 
+            app.UseStaticFiles();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapAreaControllerRoute(
+                    "admin",
+                    "admin",
+                    "Admin/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    "default", "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapRazorPages();
+
+                //endpoints.MapControllers();
 
                 //https://docs.microsoft.com/en-us/aspnet/core/signalr/configuration?view=aspnetcore-5.0&tabs=dotnet
                 //endpoints.MapHub<ChatHub>("/chathub", options =>
