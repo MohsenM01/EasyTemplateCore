@@ -9,9 +9,47 @@ Done:
 ******************************
 The project is being developed
 ******************************
+## Table Of Content
+
+******************************
+
+* [Asp.net core](https://github.com/MohsenM01/EasyTemplateCore#aspnet-core)
+* [ORM : Entity Framework Core](https://github.com/MohsenM01/EasyTemplateCore#orm--entity-framework-core)
+* [Object mapper : Automapper](https://github.com/MohsenM01/EasyTemplateCore#object-mapper--automapper)
+* [Errors Log Library : Log Elmah](https://github.com/MohsenM01/EasyTemplateCore#errors-log-library--log-elmah)
+* [Authentication : ASP.NET Core Identity](https://github.com/MohsenM01/EasyTemplateCore#authentication--aspnet-core-identity)
+* [Authentication : JWT](https://github.com/MohsenM01/EasyTemplateCore#authentication--jwt)
+* [Real-time web functionality : ASP.NET Core SignalR](https://github.com/MohsenM01/EasyTemplateCore#real-time-web-functionality--aspnet-core-signalr)
+* [Platform as a service (PaaS) - Container : Docker](https://github.com/MohsenM01/EasyTemplateCore#platform-as-a-service-paas---container--docker)
+    - [Using local image](https://github.com/MohsenM01/EasyTemplateCore#use-it-from-local-image-)
+    - [Using Docker hub image](https://github.com/MohsenM01/EasyTemplateCore#use-it-from-docker-hub-image-)
+* [Orchestration Managing containers : Kubernetes](https://github.com/MohsenM01/EasyTemplateCore#orchestration-managing-containers--kubernetes)
+  - [Deploying the Dashboard UI for Kubernetes](https://github.com/MohsenM01/EasyTemplateCore#deploying-the-dashboard-ui-for-kubernetes)
+* [Datbase : SQL Server (Always on)](https://github.com/MohsenM01/EasyTemplateCore#datbase--sql-server-always-on)
+* [Deploy RabbitMQ on Kubernetes](https://github.com/MohsenM01/EasyTemplateCore#deploy-rabbitmq-on-kubernetes)
+* [Traffic routing : NGINX Ingress Controller](https://github.com/MohsenM01/EasyTemplateCore#traffic-routing--nginx-ingress-controller)
+- [Edit Your Hosts File on Windows to route example.com](https://github.com/MohsenM01/EasyTemplateCore#edit-your-hosts-file-on-windows-to-route-examplecom)
+* [RPC framework : GRPC](https://github.com/MohsenM01/EasyTemplateCore#rpc-framework--grpc)
+* [Sysnch Consume APIs : HTTP Client](https://github.com/MohsenM01/EasyTemplateCore#sysnch-consume-apis--http-client)
+* [Message broker : RabbitMQ](https://github.com/MohsenM01/EasyTemplateCore#message-broker--rabbitmq)
+* [Datbase : PostgreSql](https://github.com/MohsenM01/EasyTemplateCore#datbase--postgresql)
+* [Datbase : MongoDb](https://github.com/MohsenM01/EasyTemplateCore#datbase--mongodb)
+* [Distributed Cache : Redis](https://github.com/MohsenM01/EasyTemplateCore#distributed-cache--redis)
+  - [HybridCachingProvider : EasyCaching](https://github.com/MohsenM01/EasyTemplateCore#todo--hybridcachingprovider--easycaching)
+* [Command and Query : CQRS](https://github.com/MohsenM01/EasyTemplateCore#command-and-query--cqrs)
+* [search and analytics engine : Elasticsearch](https://github.com/MohsenM01/EasyTemplateCore#search-and-analytics-engine--elasticsearch)
+* [IDL - Describing REST APIs : Swagger](https://github.com/MohsenM01/EasyTemplateCore#idl---describing-rest-apis--swagger)
+* [Deploy EasyTemplateCore on Kubernetes](https://github.com/MohsenM01/EasyTemplateCore#deploy-easytemplatecore-on-kubernetes)
+  - [Deploy LateralApp on Kubernetes](https://github.com/MohsenM01/EasyTemplateCore#deploy-lateralapp-on-kubernetes)
+* [UnitTest : NUnit](https://github.com/MohsenM01/EasyTemplateCore#unittest--nunit)
+* [Integrated Test : xUnit](https://github.com/MohsenM01/EasyTemplateCore#integrated-test--xunit)
+* [Test API : Postman](https://github.com/MohsenM01/EasyTemplateCore#test-api--postman)
+* [CI/CD : github Actions](https://github.com/MohsenM01/EasyTemplateCore#cicd--github-actions)
+* [Image repository : Docker hub](https://github.com/MohsenM01/EasyTemplateCore#image-repository--docker-hub)
+* [Cloud Services : AWS](https://github.com/MohsenM01/EasyTemplateCore#cloud-services--aws)
+
+
 Active ( Will have):
-AutoMapper
-Framework : ASP.NET Core
 
 Localization
 
@@ -65,7 +103,6 @@ How can we use it?
 [Getting Started Guide with AutoMapper](https://docs.automapper.org/en/stable/Getting-started.html)
 
 
-
 #### More information :
 
 [ASP.NET Core Example using AutoMapper](https://docs.automapper.org/en/stable/Dependency-injection.html)
@@ -86,10 +123,21 @@ How can we use it?
 
 [Migrate Authentication and Identity to ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/migration/identity)
 
+[Two-factor authentication using SMS and email with ASP.NET Identity](https://docs.microsoft.com/en-us/aspnet/identity/overview/features-api/two-factor-authentication-using-sms-and-email-with-aspnet-identity)
 
 ## Authentication : JWT
 
+#### More information : 
+
+[Overview of ASP.NET Core authentication](https://docs.microsoft.com/en-us/aspnet/core/security/authentication)
+
 ## Real-time web functionality : ASP.NET Core SignalR
+
+#### More information : 
+
+[Introduction to ASP.NET Core SignalR](https://docs.microsoft.com/en-us/aspnet/core/signalr/introduction)
+
+[Tutorial: Get started with ASP.NET Core SignalR](https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr)
 
 
 ## Platform as a service (PaaS) - Container : Docker
@@ -136,7 +184,7 @@ ENTRYPOINT ["dotnet", "EasyTemplateCore.Web.dll"]
 !If you want to use Kubernetes, just run step 2 and 3 in part " Use it from docker hub image "
 ```
 
-##### Use it from local image :
+##### Using local image :
 
 2- To Build the Docker Image, In solution folder, run the following command in VSCode Terminal or CMD:
 
@@ -156,7 +204,7 @@ From local image: run the following command in VSCode Terminal or CMD:
 ``` bash
 docker run -d -p 8080:80 easytemplatecore
 ```
-##### Use it from docker hub image :
+##### Using docker hub image :
 2- To Build the Docker Image, In solution folder, run the following command in VSCode Terminal or CMD:
 
 ``` bash
@@ -1006,7 +1054,26 @@ jobs:
 
 [upload-artifact](https://github.com/actions/upload-artifact)
 
+## Image repository : Docker hub
+
+#### More information : 
+
+[Configure GitHub Actions to build Dockerfile](https://docs.docker.com/ci-cd/github-actions/)
+
+[Using environments for deployment](https://docs.github.com/en/actions/deployment/using-environments-for-deployment)
+
+[How to use environment secret on github action?](https://github.com/actions/starter-workflows/issues/785)
+
+[Events that trigger workflows](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows)
+
+[Publishing Docker images](https://docs.github.com/en/actions/publishing-packages/publishing-docker-images)
+
+
 ## Cloud Services : AWS
+
+#### More information : 
+
+[Deploying to Amazon Elastic Container Service](https://docs.github.com/en/actions/deployment/deploying-to-amazon-elastic-container-service)
 
 ## License
 

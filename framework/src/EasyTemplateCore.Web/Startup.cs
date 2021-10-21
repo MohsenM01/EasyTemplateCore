@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using AspNetCoreRateLimit;
 using AutoMapper;
 using DNTCommon.Web.Core;
@@ -10,11 +11,14 @@ using EasyTemplateCore.Dtos;
 using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
 using EasyTemplateCore.Web.Grpc.Server.Country;
+using EasyTemplateCore.Web.Jwt;
 using EasyTemplateCore.Web.MessageBus.ConsumeMessage;
 using EasyTemplateCore.Web.Models;
 using EasyTemplateCore.Web.RedisCache;
 using ElmahCore;
 using ElmahCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +28,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace EasyTemplateCore.Web
@@ -104,6 +109,26 @@ namespace EasyTemplateCore.Web
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EasyTemplateCore", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter the token in the field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
             });
 
             // Scrutor => Scan method which looks in the calling assembly, and adds all concrete classes as transient services
@@ -187,8 +212,39 @@ namespace EasyTemplateCore.Web
                     Configuration.GetConnectionString("EasyTemplateCoreContext")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI();
+
+            services.AddScoped<ITokenFactoryService, TokenFactoryService>();
+
+            var bearerTokensSection = Configuration.GetSection("BearerTokens");
+            services.AddOptions<BearerTokensOptions>().Bind(bearerTokensSection);
+
+            var apiSettings = bearerTokensSection.Get<BearerTokensOptions>();
+            var key = Encoding.UTF8.GetBytes(apiSettings.Key);
+            services.AddAuthentication(opt =>
+                {
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateAudience = true,
+                        ValidateIssuer = true,
+                        ValidAudience = apiSettings.Audience,
+                        ValidIssuer = apiSettings.Issuer,
+                        ClockSkew = TimeSpan.Zero,
+                        ValidateLifetime = true
+                    };
+                });
 
             services.AddRazorPages();
         }
