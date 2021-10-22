@@ -1,6 +1,6 @@
 # EasyTemplateCore
 
-A simple template for Asp.net core
+An Open Source and Simple Web Application Framework for ASP.NET Core Based on MicroServices 
 
 IDE : VSCode ( Installed extensions : ms-dotnettools.csharp, ms-azuretools.vscode-docker)
 
@@ -10,8 +10,6 @@ Done:
 The project is being developed
 ******************************
 ## Table Of Content
-
-******************************
 
 * [Asp.net core](https://github.com/MohsenM01/EasyTemplateCore#aspnet-core)
 * [ORM : Entity Framework Core](https://github.com/MohsenM01/EasyTemplateCore#orm--entity-framework-core)
@@ -28,7 +26,7 @@ The project is being developed
 * [Datbase : SQL Server (Always on)](https://github.com/MohsenM01/EasyTemplateCore#datbase--sql-server-always-on)
 * [Deploy RabbitMQ on Kubernetes](https://github.com/MohsenM01/EasyTemplateCore#deploy-rabbitmq-on-kubernetes)
 * [Traffic routing : NGINX Ingress Controller](https://github.com/MohsenM01/EasyTemplateCore#traffic-routing--nginx-ingress-controller)
-- [Edit Your Hosts File on Windows to route example.com](https://github.com/MohsenM01/EasyTemplateCore#edit-your-hosts-file-on-windows-to-route-examplecom)
+  - [Edit Your Hosts File on Windows to route example.com](https://github.com/MohsenM01/EasyTemplateCore#edit-your-hosts-file-on-windows-to-route-examplecom)
 * [RPC framework : GRPC](https://github.com/MohsenM01/EasyTemplateCore#rpc-framework--grpc)
 * [Sysnch Consume APIs : HTTP Client](https://github.com/MohsenM01/EasyTemplateCore#sysnch-consume-apis--http-client)
 * [Message broker : RabbitMQ](https://github.com/MohsenM01/EasyTemplateCore#message-broker--rabbitmq)

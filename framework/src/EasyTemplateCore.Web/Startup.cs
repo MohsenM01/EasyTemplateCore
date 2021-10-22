@@ -11,6 +11,7 @@ using EasyTemplateCore.Dtos;
 using EasyTemplateCore.Dtos.Location.Country;
 using EasyTemplateCore.Services.Location.Interfaces;
 using EasyTemplateCore.Web.Grpc.Server.Country;
+using EasyTemplateCore.Web.Hubs;
 using EasyTemplateCore.Web.Jwt;
 using EasyTemplateCore.Web.MessageBus.ConsumeMessage;
 using EasyTemplateCore.Web.Models;
@@ -22,6 +23,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -247,6 +249,8 @@ namespace EasyTemplateCore.Web
                 });
 
             services.AddRazorPages();
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -309,12 +313,12 @@ namespace EasyTemplateCore.Web
                 //endpoints.MapControllers();
 
                 //https://docs.microsoft.com/en-us/aspnet/core/signalr/configuration?view=aspnetcore-5.0&tabs=dotnet
-                //endpoints.MapHub<ChatHub>("/chathub", options =>
-                //{
-                //    options.Transports =
-                //        HttpTransportType.WebSockets |
-                //        HttpTransportType.LongPolling;
-                //});
+                endpoints.MapHub<ChatHub>("/chathub", options =>
+                {
+                    options.Transports =
+                        HttpTransportType.WebSockets |
+                        HttpTransportType.LongPolling;
+                });
 
                 endpoints.MapGrpcService<GrpcCountryService>();
 
