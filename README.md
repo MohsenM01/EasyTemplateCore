@@ -616,6 +616,7 @@ c:\windows\system32\drivers\etc\hosts
 
 
 ###### More information :
+
 [Services, Load Balancing, and Networking on Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 
 [NGINX Ingress Controller Installation Guide](https://kubernetes.github.io/ingress-nginx/deploy/)
@@ -623,6 +624,21 @@ c:\windows\system32\drivers\etc\hosts
 [NGINX Ingress Controller Basic usage - host based routing](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/)
 
 [How to Edit Your Hosts File on Windows, Mac, or Linux](https://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/)
+
+
+## Multi-Cloud Object Storage : min.io
+
+MinIO offers high-performance, S3 compatible object storage.
+Native to Kubernetes, MinIO is the only object storage suite available on
+every public cloud, every Kubernetes distribution, the private cloud and the
+edge. MinIO is software-defined and is 100% open source under GNU AGPL v3.
+
+
+###### More information :
+
+[MinIO Client SDK for .NET](https://docs.min.io/docs/dotnet-client-quickstart-guide.html)
+
+[Deploy MinIO Operator on Kubernetes](https://docs.min.io/minio/k8s/deployment/deploy-minio-operator.html)
 
 ## RPC framework : GRPC
 

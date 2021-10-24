@@ -18,7 +18,6 @@ using EasyTemplateCore.Web.Models;
 using EasyTemplateCore.Web.RedisCache;
 using ElmahCore;
 using ElmahCore.Mvc;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -256,8 +255,12 @@ namespace EasyTemplateCore.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IUnitOfWork unitOfWork)
         {
-            //https://github.com/stefanprodan/AspNetCoreRateLimit
-            app.UseIpRateLimiting();
+
+            if (!env.IsDevelopment())
+            {
+                //https://github.com/stefanprodan/AspNetCoreRateLimit
+                app.UseIpRateLimiting();
+            }
 
             //https://github.com/andrewlock/NetEscapades.AspNetCore.SecurityHeaders
             var policyCollection = new HeaderPolicyCollection()

@@ -21,11 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTemplateCore.Services.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EC7B92A0-2EC7-4DC7-8617-144FBEC2692E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTemplateCore.Data.SqlServer", "src\EasyTemplateCore.Data.SqlServer\EasyTemplateCore.Data.SqlServer.csproj", "{EF39EE7E-2A55-48F9-8606-611184F7F37C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTemplateCore.Data.SqlServer", "src\EasyTemplateCore.Data.SqlServer\EasyTemplateCore.Data.SqlServer.csproj", "{EF39EE7E-2A55-48F9-8606-611184F7F37C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTemplateCore.Data.PostgreSql", "src\EasyTemplateCore.Data.PostgreSql\EasyTemplateCore.Data.PostgreSql.csproj", "{A44D0C52-6EFB-4F7B-9239-8876524177E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTemplateCore.Data.PostgreSql", "src\EasyTemplateCore.Data.PostgreSql\EasyTemplateCore.Data.PostgreSql.csproj", "{A44D0C52-6EFB-4F7B-9239-8876524177E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTemplateCore.Data.MySql", "src\EasyTemplateCore.Data.MySql\EasyTemplateCore.Data.MySql.csproj", "{79E6F246-738E-44FD-9EE7-600BDCDCBA3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTemplateCore.Data.MySql", "src\EasyTemplateCore.Data.MySql\EasyTemplateCore.Data.MySql.csproj", "{79E6F246-738E-44FD-9EE7-600BDCDCBA3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTemplateCore.Web.IntegrationTests", "tests\EasyTemplateCore.Web.IntegrationTests\EasyTemplateCore.Web.IntegrationTests.csproj", "{0EEF5F76-3CF2-4351-A2FC-6463D2687339}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,6 +159,18 @@ Global
 		{79E6F246-738E-44FD-9EE7-600BDCDCBA3D}.Release|x64.Build.0 = Release|Any CPU
 		{79E6F246-738E-44FD-9EE7-600BDCDCBA3D}.Release|x86.ActiveCfg = Release|Any CPU
 		{79E6F246-738E-44FD-9EE7-600BDCDCBA3D}.Release|x86.Build.0 = Release|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Debug|x64.Build.0 = Debug|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Debug|x86.Build.0 = Debug|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Release|x64.ActiveCfg = Release|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Release|x64.Build.0 = Release|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Release|x86.ActiveCfg = Release|Any CPU
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +186,7 @@ Global
 		{EF39EE7E-2A55-48F9-8606-611184F7F37C} = {5E605BE5-AF14-4A58-89AC-528CF7393266}
 		{A44D0C52-6EFB-4F7B-9239-8876524177E8} = {5E605BE5-AF14-4A58-89AC-528CF7393266}
 		{79E6F246-738E-44FD-9EE7-600BDCDCBA3D} = {5E605BE5-AF14-4A58-89AC-528CF7393266}
+		{0EEF5F76-3CF2-4351-A2FC-6463D2687339} = {EC7B92A0-2EC7-4DC7-8617-144FBEC2692E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3BEE156F-B6DA-4ABD-9567-4978A95DE3C5}
